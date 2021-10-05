@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/prakharmaurya/go_bookings/pkg/config"
@@ -52,9 +54,31 @@ func (m *Repository) Availability(rw http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(rw, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 func (m *Repository) PostAvailability(rw http.ResponseWriter, r *http.Request) {
-	rw.WriteHeader(http.StatusOK)
-	rw.Write([]byte("Posted"))
+	start := r.Form.Get("start")
+	end := r.Form.Get("end")
 
+	rw.Write([]byte("start date is " + start + " end date " + end))
+
+}
+
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+func (m *Repository) AvailabilityJSON(rw http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      true,
+		Message: "Available",
+	}
+	out, err := json.MarshalIndent(resp, "", "	")
+
+	if err != nil {
+		fmt.Println("failed to masrshel", err)
+	}
+
+	rw.Header().Set("Content-Type", "application/json")
+	rw.Write(out)
 }
 func (m *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(rw, r, "contact.page.tmpl", &models.TemplateData{})
