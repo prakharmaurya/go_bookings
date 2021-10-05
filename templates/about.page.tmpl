@@ -1,0 +1,27 @@
+{{template "base" .}}
+
+{{define "title"}}
+  <title>About</title>
+{{end}}
+
+{{define "content"}}
+  <div>
+  <h1>About</h1>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem,
+      molestiae et, sequi ullam quos numquam, in dolorum qui dolor dicta
+      molestias modi aliquid adipisci. Cupiditate, enim aut. Accusamus,
+      molestiae? At.
+    </p>
+    <p>Test : {{index .StringMap "greet"}}</p>
+    <p>
+      {{if ne (index .StringMap "remote_ip") ""}}
+        Your remote IP is {{index .StringMap "remote_ip"}}
+      {{else}}
+         I dont know IP address visit homepage <a href="http://localhost:8080">Home Page</a>
+      {{end}}
+    
+    </p>
+
+  </div>
+{{end}} 
