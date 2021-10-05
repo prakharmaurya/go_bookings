@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"text/template"
 
+	"github.com/justinas/nosurf"
 	"github.com/prakharmaurya/go_bookings/pkg/config"
 	"github.com/prakharmaurya/go_bookings/pkg/models"
 )
@@ -19,7 +20,12 @@ func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
+	return td
+}
+
+func RenderTemplate(rw http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	var t *template.Template
 	var ok bool
 	if app.UseCache {
@@ -38,6 +44,8 @@ func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData
 	}
 
 	buf := new(bytes.Buffer)
+
+	td = AddDefaultData(td, r)
 
 	err := t.Execute(buf, td)
 
