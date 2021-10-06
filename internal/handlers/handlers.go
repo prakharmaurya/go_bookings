@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/prakharmaurya/go_bookings/pkg/config"
-	"github.com/prakharmaurya/go_bookings/pkg/models"
-	"github.com/prakharmaurya/go_bookings/pkg/render"
+	"github.com/prakharmaurya/go_bookings/internal/config"
+	"github.com/prakharmaurya/go_bookings/internal/models"
+	"github.com/prakharmaurya/go_bookings/internal/render"
 )
 
 var Repo *Repository
