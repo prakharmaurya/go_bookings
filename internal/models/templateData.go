@@ -1,5 +1,7 @@
 package models
 
+import "github.com/prakharmaurya/go_bookings/internal/forms"
+
 type TemplateData struct {
 	StringMap       map[string]string
 	IntMap          map[string]int
@@ -10,4 +12,5 @@ type TemplateData struct {
 	Warning         string
 	Error           string
 	IsAuthenticated int
+	Form            *forms.Form
 }
