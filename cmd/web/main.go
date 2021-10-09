@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/prakharmaurya/go_bookings/internal/config"
 	"github.com/prakharmaurya/go_bookings/internal/handlers"
+	"github.com/prakharmaurya/go_bookings/internal/models"
 	"github.com/prakharmaurya/go_bookings/internal/render"
 )
 
@@ -17,6 +19,8 @@ const portNumber = 8080
 var app config.AppConfig
 
 func main() {
+
+	gob.Register(models.Reservation{})
 
 	app.InProduction = false
 	app.UseCache = true // In dev mode
