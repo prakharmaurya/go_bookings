@@ -20,6 +20,28 @@ var app config.AppConfig
 
 func main() {
 
+	err := run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Server starting at :", portNumber)
+
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", portNumber),
+		Handler: routes(&app),
+	}
+	err = srv.ListenAndServe()
+	if err != nil {
+		fmt.Println("Failed to start server", err)
+		defer func() {
+			srv.Close()
+		}()
+	}
+}
+
+func run() error {
 	gob.Register(models.Reservation{})
 
 	app.InProduction = false
@@ -37,6 +59,7 @@ func main() {
 
 	if err != nil {
 		log.Fatalln("Failed to create tempalate cache", err)
+		return err
 	}
 
 	app.TemplateCache = tc
@@ -44,18 +67,5 @@ func main() {
 	render.NewTemplate(&app)
 	repo := handlers.NewRepositor(&app)
 	handlers.NewHandlers(repo)
-
-	fmt.Println("Server starting at :", portNumber)
-
-	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", portNumber),
-		Handler: routes(&app),
-	}
-	err = srv.ListenAndServe()
-	if err != nil {
-		fmt.Println("Failed to start server", err)
-		defer func() {
-			srv.Close()
-		}()
-	}
+	return nil
 }
