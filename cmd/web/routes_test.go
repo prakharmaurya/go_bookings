@@ -4,18 +4,19 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi"
 	"github.com/prakharmaurya/go_bookings/internal/config"
 )
 
-func TestRoute(t *testing.T) {
+func TestRoutes(t *testing.T) {
 	var app config.AppConfig
 
-	h := routes(&app)
+	mux := routes(&app)
 
-	switch v := h.(type) {
+	switch v := mux.(type) {
 	case *chi.Mux:
+		// do nothing; test passed
 	default:
-		t.Error(fmt.Sprintf("Type of returned Value dosen't match, but it is %T", v))
+		t.Error(fmt.Sprintf("type is not *chi.Mux, type is %T", v))
 	}
 }
